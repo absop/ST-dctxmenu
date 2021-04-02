@@ -39,11 +39,13 @@ def fold_items(caption, items):
     return {'caption': caption, 'children': items}
 
 def write_menu(menu, filepath):
+    print('file: ', filepath)
+    print('menu:', menu)
     with open(filepath, 'w+') as file:
         json.dump(menu, file)
 
 def plugin_loaded():
-    menus_cache_dir = os.path.join(sublime.cache_path(), __package__)
+    menus_cache_dir = os.path.join(sublime.cache_path(), 'dctxmenu')
     os.makedirs(menus_cache_dir, exist_ok=True)
     for dyn_menu in all_dynamic_menu:
         dyn_menu.file = os.path.join(menus_cache_dir, dyn_menu.file)
@@ -70,9 +72,9 @@ class DynamicContextMenuEventListener(sublime_plugin.EventListener):
                 items = []
                 for name, make in dyn_menu.registers.items():
                     item = make(view, event)
-                    if   isistance(item, dict):
+                    if   isinstance(item, dict):
                         items.append(item)
-                    elif isistance(item, list):
+                    elif isinstance(item, list):
                        items.extend(item)
                 if items:
                     write_menu(items, dyn_menu.file)
