@@ -96,4 +96,3 @@ def plugin_unloaded():
 - [在线搜索](https://github.com/absop/SearchOnline)
 - [打开其他文件](https://github.com/absop/OpenOtherFiles)
 - [翻译器](https://github.com/absop/Translators)
-
