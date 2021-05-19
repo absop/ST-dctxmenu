@@ -58,18 +58,14 @@ class ExecuteOuterCommandsCommand(sublime_plugin.WindowCommand):
         return (isinstance(command, list) and all(map(isstr, command)) or
                 isinstance(command, str))
 
-    def extract_variables(self, cmd, shell, variables):
-        cmd = sublime.expand_variables(cmd, variables)
-        if shell and type(cmd) is list:
-            cmd = ' '.join(cmd)
-        return cmd
-
     def run(self, command, shell=True, **kwargs):
         if not self.is_valid_command(command):
             sublime.error_message('Invalid command: ' + str(command))
             return
         variables = self.window.extract_variables()
-        cmd = self.extract_variables(command, shell, variables)
+        cmd = sublime.expand_variables(command, variables)
+        if shell and type(cmd) is list:
+            cmd = ' '.join(cmd)
         try:
             subprocess.Popen(cmd, shell=shell)
         except Exception as e:
