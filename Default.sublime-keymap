@@ -3,7 +3,7 @@
         "keys": ["ctrl+alt+t"],
         "command": "execute_outer_commands",
         "args": {
-            "command": ["Cmder.exe", "${file_path}"],
+            "command": ["Cmder.exe", "\"${file_path}\""],
             "shell": true
         }
     }
