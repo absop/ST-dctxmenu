@@ -1,0 +1,16 @@
+[
+    {
+        "caption": "Preferences: ExecuteOuterCommands Settings",
+        "command": "edit_settings",
+        "args": {
+            "base_file": "${packages}/dctxmenu/ExecuteOuterCommands.sublime-settings",
+            "default": "{\n\t$0\n}\n"
+        }
+    }
+    /*,
+    {
+        "caption": "ExecuteOuterCommands: Toggle debug",
+        "command": "",
+        "args": {"action": "toggle debug"}
+    }*/
+]
