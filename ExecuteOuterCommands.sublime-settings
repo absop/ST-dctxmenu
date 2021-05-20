@@ -1,14 +1,4 @@
 {
     "caption": "Execute Outer Commands",
-
-    "commands": [
-        {
-            "caption": "WSL Here",
-            "command": ["ConEmu.exe", "/dir", "\"${file_path}\""]
-        },
-        {
-            "caption": "Cmder Here",
-            "command": ["Cmder.exe", "\"${file_path}\""]
-        }
-    ]
+    "commands": []
 }

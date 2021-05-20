@@ -22,7 +22,11 @@
 
 
 # 绑定右键菜单
-设置挺简单的，如下
+你可以通过在命令面板中输入执行`Preferences: ExecuteOuterCommands Settins`命令，或点击主菜单 (Preferences>Package Settings>dctxmenu>Settings) 来开始编辑设置。
+
+在设置中，你可以通过添加**命令配置**项来在右键菜单中增加一个**菜单子项**。
+
+下面是一个例子
 ```json
 {
     "caption": "Execute Outer Commands",
@@ -38,13 +42,35 @@
         }
     ]
 }
-
 ```
-其中，`commands` 是一个**命令配置**列表，每一项*命令配置*是一个词典（Dict，或 Map），其中的 `caption`为命令在菜单中显示的标题，`command`为具体要执行的命令，请参考上面的**例子**认真填写。`command`可以是一个字符串，也可以是一个字符串的列表，`command`的字符串中可以包含一些变量（参考[Sublime Text API 文档](https://www.sublimetext.com/docs/api_reference.html#ver-dev)，搜索`extract_variables`），在执行命令时，这些变量会被替换为对应的值。
+
+其中，`commands` 是一个**命令配置**列表。
+
+每一个**命令配置**是一个词典（Dict，或 Map），其中的 `caption`为对应的命令在菜单中显示的标题，`command`为具体要执行的命令，请参考上面的例子认真填写。`command`可以是一个字符串，也可以是一个字符串的列表，`command`的字符串中可以包含一些变量（参考[Sublime Text API 文档](https://www.sublimetext.com/docs/api_reference.html#ver-dev)，搜索`extract_variables`），在执行命令时，这些变量会被替换为对应的值。
 
 此外，命令配置还支持一个叫做`shell`的参数，其值为`bool`类型，这个参数默认为 `True`，被传递给`subprocess`，一般用不到。
 
-`commands`中的一项直接对应一个菜单项，当有多个菜单项时，菜单会被折叠，折叠之后的菜单的标题为与`commands`同级的`caption`的值。
+`commands`中的一项直接对应一个菜单项。当有多个菜单项时，菜单会被折叠，折叠之后的菜单的标题为与`commands`同级的`caption`的值。而当`commands`中只有一项配置时，右键菜单中只会增加一个顶级菜单。
+
+下图是上面的例子在右键菜单中增加的两个菜单子项
+![](images/multi-items.png)
+
+下面是另一个例子
+
+- 设置
+   ```json
+   {
+       "commands": [
+           {
+               "caption": "Cmder Here",
+               "command": ["Cmder.exe", "\"${file_path}\""]
+           }
+       ]
+   }
+   ```
+
+- 对应的菜单截图
+   ![](images/single-item.png)
 
 
 # 绑定快捷键
@@ -61,7 +87,7 @@
     }
 ]
 ```
-你可以复制该例子，然后修改 `"keys"`和`"args"`部分，`"args"`可以直接复制上面[绑定右键菜单](#绑定右键菜单)设置中的某个命令配置项（其中的`caption`会被忽略，不用管）。
+你可以复制该例子，然后修改 `"keys"`和`"args"`部分，`"args"`可以直接复制上面[绑定右键菜单](#绑定右键菜单)设置中的某个命令配置项（其中的`caption`会被忽略，不用在意）。
 
 
 # 高级用法
