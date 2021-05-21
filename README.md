@@ -1,12 +1,15 @@
 # dctxmenu (Dynamic Context Menu)
-[dctxmenu](https://github.com/absop/dctxmenu)是一个 Sublime Text 插件，支持动态上下文菜单（右键菜单）。
+[中文文档](README.cn.md)
 
-通过修改设置文件，用户可以将**外部命令**绑定到右键菜单项或快捷键，从而通过鼠标右键或快捷键便捷地执行相应的外部命令。
+[dctxmenu](https://github.com/absop/dctxmenu) is a Sublime Text plugin, which support dynamic context menu (right-click menu).
+
+By modifying the settings file, users can bind **external commands** to right-click menu items or shortcuts, so that the corresponding external commands can be executed easily with the right mouse button or shortcuts.
 
 
-# 安装
-- 使用`git clone`将该仓库下载到你的（Sublime Text）插件安装目录（这需要你的电脑上装有Git工具）。
-- 直接在 Github 网页上下载该仓库的压缩包，然后解压到你的（Sublime Text）插件安装目录，注意将目录名更改为 `dctxmenu`，且`dctxmenu`应直接包含插件代码文件，不要有多余嵌套，如下：
+# Installation
+- Use `git clone` to download the repository into your `Sublime Text package directory` (this requires you to have Git installed on your computer).
+
+- Download the repository archive directly from the GitHub web page and extract it to your `Sublime Text package directory`. Be sure to change the directory name to `dctxmenu` and `dctxmenu` should contain the source code files directly without unnecessary nestings, as follows
    ```
    dctxmenu
        Default.sublime-commands
@@ -21,12 +24,12 @@
    ```
 
 
-# 绑定右键菜单
-你可以通过在命令面板中输入执行`Preferences: ExecuteOuterCommands Settins`命令，或点击主菜单 (Preferences>Package Settings>dctxmenu>Settings) 来开始编辑设置。
+# Bind External Commands to The Right-click Menu
+You can using the command palette to type and execute the command `Preferences ExecuteOutterCommands Settings`, or click on the main menu (Preferences>Package Settings> dctxmenu >Settings), to begin editing the settings.
 
-在设置中，你可以通过添加**命令配置**项来在右键菜单中增加一个**菜单子项**。
+You can add a **menu sub-item** to the right-click menu by adding a **command-map** to the `commands` entry, which is one of the two setting entires of this plugin, the other is `caption`.
 
-下面是一个例子
+Here's an example
 ```json
 {
     "caption": "Execute Outer Commands",
@@ -43,21 +46,19 @@
     ]
 }
 ```
+Where `commands` is a list of `command-map`s.
 
-其中，`commands` 是一个**命令配置**列表。
+Each `command-map` is a dictionary (Dict, or Map), where `caption` is the title of the corresponding command displayed in the menu, and `command` is the specific command to be executed. Please refer to the above example to fill in carefully. `command` can be a string, or a list of strings, the strings of `command` can contain some variables (reference [Sublime Text API documentation](https://www.sublimetext.com/docs/api_reference.html#ver-dev), search `extract_variables`) and these variables will be replaced with their corresponding values when the command is executed.
 
-每一个**命令配置**是一个词典（Dict，或 Map），其中的 `caption`为对应的命令在菜单中显示的标题，`command`为具体要执行的命令，请参考上面的例子认真填写。`command`可以是一个字符串，也可以是一个字符串的列表，`command`的字符串中可以包含一些变量（参考[Sublime Text API 文档](https://www.sublimetext.com/docs/api_reference.html#ver-dev)，搜索`extract_variables`），在执行命令时，这些变量会被替换为对应的值。
+In addition, `command-map` supports a optional argument called `shell` with a boolean value, which defaults to `true` and is passed to `subprocess` and is not normally used.
 
-此外，命令配置还支持一个叫做`shell`的参数，其值为`bool`类型，这个参数默认为 `True`，被传递给`subprocess`，一般用不到。
+An entry in `commands` directly corresponds to a menu item. When there are multiple menu items, the menu will be folded and the folded menu will be titled with the value of the `caption` of the same level as `commands`. When there is only one `command-map` in `commands`, only one top-level menu is added to the right-click menu.
 
-`commands`中的一项直接对应一个菜单项。当有多个菜单项时，菜单会被折叠，折叠之后的菜单的标题为与`commands`同级的`caption`的值。而当`commands`中只有一项配置时，右键菜单中只会增加一个顶级菜单。
-
-下图是上面的例子在右键菜单中增加的两个菜单子项
+The following screen-shot shows the two menu sub-items were added to the right-click menu with using the example settings above.
 ![](images/multi-items.png)
 
-下面是另一个例子
-
-- 设置
+Here's another example
+- The settings
    ```json
    {
        "commands": [
@@ -68,13 +69,12 @@
        ]
    }
    ```
-
-- 对应的菜单截图
+- A screen-shot of the corresponding menu
    ![](images/single-item.png)
 
 
-# 绑定快捷键
-你还可以将特定的外部命令绑定到快捷键（Preferences>Key Bindings），从而在Sublime Text中通过快捷键执行外部命令。下面是一个例子
+# Binding Shortcuts
+By editing your personal `keymap` file (Preferences>Key Bindings), you can also bind specific external commands to shortcuts, so that you can use shortcuts to execute external commands in Sublime Text. Here's an example
 ```json
 [
     {
@@ -87,11 +87,11 @@
     }
 ]
 ```
-你可以复制该例子，然后修改 `"keys"`和`"args"`部分，`"args"`可以直接复制上面[绑定右键菜单](#绑定右键菜单)设置中的某个命令配置项（其中的`caption`会被忽略，不用在意）。
+You can copy this example and modify the `"keys"` and `"args"` entries. The value of `"args"` is a `command-map`, except that the `caption` entry will be ignored.
 
 
-# 高级用法
-在别的插件中注册使用`dctxmenu`的功能
+# Advanced usage
+Register & use the features of `dctxmenu` in another plugin
 ```python
 import dctxmenu
 
@@ -116,9 +116,10 @@ def plugin_loaded():
 def plugin_unloaded():
     dctxmenu.deregister(__package__)
 ```
-别的插件可以通过注册一个菜单生成函数（如上面的`make_menu`）来使用`dctxmenu`的功能，
-具体用法请阅读`dctxmenu`核心支持库的源码（本仓库下的`plugin.py`文件（80行）），并参考其使用示例：`execute_outer_commands.py`文件（本插件的功能部分，不到75行）。下面是另外一些例子
+Other plugins can use `dctxmenu`'s function by registering a menu-generating function (Such as the above `ExecuteOuterCommandsCommand.make_menu`).
 
-- [在线搜索](https://github.com/absop/SearchOnline)
-- [打开其他文件](https://github.com/absop/OpenOtherFiles)
-- [翻译器](https://github.com/absop/Translators)
+For details, please read the source code of the `dctxmenu` core support library (the [plugin.py](plugin.py) file in this repository (80 lines)) and refer to its use example: the [execute_outer_commands.py](execute_outer_commands.py) file (functional part of this plugin, less than 75 lines). Here are some more examples
+
+- [SearchOnline](https://github.com/absop/SearchOnline)
+- [OpenOtherFiles](https://github.com/absop/OpenOtherFiles)
+- [Translators](https://github.com/absop/Translators)
