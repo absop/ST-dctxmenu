@@ -1,3 +1,4 @@
+import os
 import subprocess
 import dctxmenu
 
@@ -36,6 +37,8 @@ class ExecuteOuterCommandsCommand(sublime_plugin.WindowCommand):
 
     @classmethod
     def make_menu(cls, view, event):
+        if not os.path.exists(view.file_name() or ''):
+            return None
         items = []
         for cmd in cls.commands:
             enabled = cmd.get('enabled', True)
@@ -71,4 +74,3 @@ class ExecuteOuterCommandsCommand(sublime_plugin.WindowCommand):
         except Exception as e:
             errmsg = 'Error occurred when execute outer command: ' + str(command)
             sublime.status_message(errmsg)
-
