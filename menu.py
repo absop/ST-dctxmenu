@@ -2,6 +2,7 @@ import os
 import json
 import time
 import webbrowser
+import subprocess
 
 import sublime
 import sublime_plugin
@@ -130,6 +131,28 @@ class ContextMenuWriterEventListener(sublime_plugin.EventListener):
                 writer.save()
 
 
+class OpenFileWithCommand(sublime_plugin.WindowCommand):
+    programs = {
+        'windows': 'openWith "{}"',
+        'osx'    : 'open     "{}"',
+        'linux'  : 'xdg-open "{}"'
+    }
+
+    def run(self, file):
+        cmd = self.programs[sublime.platform()]
+        cmd = cmd.format(file)
+        def checked_call():
+            try:
+                subprocess.call(cmd)
+            except Exception as e:
+                sublime.status_message(str(e))
+        sublime.set_timeout_async(checked_call)
+
+
 class OpenFileWithDefaultApplicationCommand(sublime_plugin.WindowCommand):
     def run(self, file):
+        """
+        if sublime.platform() == 'windows':
+            os.startfile(self.view.file_name())
+        """
         webbrowser.open_new_tab(file)
